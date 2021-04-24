@@ -10,9 +10,11 @@ class MainThread:
     # Runs main thread
     def run():
         timer_thread = TimerThread()
+        timer_thread.run()
         while True:
             self.get_start_key(timer_thread)
             self.get_end_key(timer_thread)
+            self.get_restart_key(timer_thread)
         
     def get_start_key(self, timer_thread):
         started = False
@@ -30,7 +32,16 @@ class MainThread:
                 timer_thread.stop()
                 
             else:
-                started = False
+                ended = False
+                
+    def get_restart_key(self, timer_thread):
+        restarted = False
+            if GetKeyState(0x11) < 0 and GetKeyState(0x52) < 0 and not restarted:
+                restarted = True
+                timer_thread.restart()
+                
+            else:
+                restarted = False
 
 
 # Create timer thread used for handling a timer
